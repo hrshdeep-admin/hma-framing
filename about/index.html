@@ -1,1 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - H.M.A. Framing & Renovations Ltd.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d35400;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #2c3e50;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #d35400;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #d35400;
+        }
+
+        .nav-links a.active {
+            color: #d35400;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-top: 80px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 80px 2rem 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><path d="M0 0L50 50L0 100" stroke="rgba(255,255,255,0.03)" stroke-width="2" fill="none"/><path d="M50 0L100 50L50 100" stroke="rgba(255,255,255,0.03)" stroke-width="2" fill="none"/></svg>');
+            opacity: 0.3;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Story Section */
+        .story-section {
+            padding: 80px 2rem;
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .story-text h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-text h3 {
+            font-size: 1.5rem;
+            color: #d35400;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .story-text p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .story-image {
+            background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
+            border-radius: 10px;
+            padding: 3rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .timeline-item {
+            padding: 1.5rem;
+            border-left: 3px solid white;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 1.5rem;
+            width: 13px;
+            height: 13px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .timeline-year {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-text {
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        /* Values Section */
+        .values-section {
+            padding: 80px 2rem;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 3rem;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 4px solid #d35400;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .value-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .value-card h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .value-card p {
+            color: #7f8c8d;
+            line-height: 1.7;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 80px 2rem;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #d35400;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Why Choose Section */
+        .why-choose-section {
+            padding: 80px 2rem;
+            background: white;
+        }
+
+        .why-choose-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .why-choose-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .why-choose-item:hover {
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .why-choose-icon {
+            font-size: 2.5rem;
+            color: #d35400;
+            flex-shrink: 0;
+        }
+
+        .why-choose-content h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .why-choose-content p {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 80px 2rem;
+            background: #f8f9fa;
+        }
+
+        .team-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .team-content h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-content p {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 2rem;
+            background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            margin: 0 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #d35400;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #d35400;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: #d35400;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                transition: left 0.3s ease;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .story-content {
+                grid-template-columns: 1fr;
+            }
+
+            .story-content.reverse {
+                direction: ltr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+
+            .why-choose-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">H.M.A. <span>Framing & Renovations</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../our-projects/index.html">Our Projects</a></li>
+                <li><a href="index.html" class="active">About</a></li>
+                <li><a href="../contact-us/index.html">Contact Us</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Our Story</h1>
+        <p>Building dreams, one project at a time since 2016</p>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-text">
+                    <h2>Who We Are</h2>
+                    <p>H.M.A. Framing & Renovations Ltd. was founded in 2016 with a simple mission: to deliver exceptional construction services that transform spaces and exceed expectations. What started as a small framing operation has grown into a comprehensive construction company serving communities across Alberta.</p>
+                    
+                    <p>Based in Okotoks, we've built our reputation on a foundation of quality craftsmanship, honest communication, and unwavering commitment to our clients. Every project we undertake is treated with the same level of dedication, whether it's a custom home frame or a complete commercial renovation.</p>
+
+                    <h3>Our Approach</h3>
+                    <p>We believe that great construction is about more than just materials and tools—it's about understanding your vision and bringing it to life with precision and care. Our team combines years of experience with modern techniques to deliver results that stand the test of time.</p>
+                </div>
+
+                <div class="story-image">
+                    <div class="timeline-item">
+                        <div class="timeline-year">2016</div>
+                        <div class="timeline-text">H.M.A. Framing & Renovations Ltd. established in Okotoks, Alberta, focusing on residential framing services.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2018</div>
+                        <div class="timeline-text">Expanded services to include complete home renovations and commercial framing projects.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-text">Extended service area to Calgary, Chestermere, and Cochrane, growing our team and capabilities.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2025</div>
+                        <div class="timeline-text">Continuing to serve Alberta with excellence, innovation, and a commitment to quality that defines every project.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="container">
+            <h2 class="section-title">Our Core Values</h2>
+            <p class="section-subtitle">The principles that guide every decision we make</p>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <h3>Quality First</h3>
+                    <p>We never compromise on quality. Every nail, every measurement, every finish is executed to the highest standard because your project deserves nothing less.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3>Integrity</h3>
+                    <p>Honest communication, transparent pricing, and ethical practices are the cornerstones of how we do business. Your trust is our most valuable asset.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">⚡</div>
+                    <h3>Reliability</h3>
+                    <p>When we commit to a timeline, we deliver. Our reputation is built on showing up, meeting deadlines, and keeping our promises.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">💡</div>
+                    <h3>Innovation</h3>
+                    <p>We stay current with industry advancements, modern techniques, and best practices to provide you with efficient, cutting-edge solutions.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">🛡️</div>
+                    <h3>Safety</h3>
+                    <p>Every job site is managed with strict safety protocols. Protecting our team, your property, and everyone involved is paramount.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">🌟</div>
+                    <h3>Customer Focus</h3>
+                    <p>Your satisfaction drives everything we do. We listen, we adapt, and we work tirelessly to ensure your vision becomes reality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">8+</div>
+                <div class="stat-label">Years in Business</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Quality Guaranteed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Customer Support</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="why-choose-section">
+        <div class="container">
+            <h2 class="section-title">Why Choose H.M.A.</h2>
+            <p class="section-subtitle">What sets us apart in the construction industry</p>
+
+            <div class="why-choose-grid">
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">✓</div>
+                    <div class="why-choose-content">
+                        <h3>Licensed & Insured</h3>
+                        <p>Fully licensed and insured for your peace of mind. We meet all regulatory requirements and maintain comprehensive coverage.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">✓</div>
+                    <div class="why-choose-content">
+                        <h3>Experienced Team</h3>
+                        <p>Our skilled craftsmen bring years of hands-on experience to every project, ensuring expert execution from start to finish.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">✓</div>
+                    <div class="why-choose-content">
+                        <h3>Transparent Pricing</h3>
+                        <p>No hidden fees, no surprises. We provide detailed quotes and keep you informed of any changes throughout the project.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">✓</div>
+                    <div class="why-choose-content">
+                        <h3>Local Expertise</h3>
+                        <p>Deep knowledge of Alberta building codes, climate considerations, and local regulations ensures compliance and quality.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">✓</div>
+                    <div class="why-choose-content">
+                        <h3>Quality Materials</h3>
+                        <p>We partner with trusted suppliers to source premium materials that ensure durability and longevity for your investment.</p>
+                    </div>
+                </div>
+
+                <div class="why-choose-item">
+                    <div class="why-choose-icon">✓</div>
+                    <div class="why-choose-content">
+                        <h3>Warranty Backed</h3>
+                        <p>We stand behind our work with comprehensive warranties, giving you confidence in the quality of our craftsmanship.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="team-content">
+            <h2>Our Team</h2>
+            <p>At H.M.A. Framing & Renovations, we're more than just a construction company—we're a team of dedicated professionals who are passionate about what we build. Our crew consists of skilled framers, experienced renovators, and detail-oriented craftsmen who take pride in every project.</p>
+            
+            <p>Each team member brings unique expertise and a shared commitment to excellence. We invest in ongoing training and development to ensure we're always at the forefront of industry best practices and innovations.</p>
+            
+            <p>When you work with H.M.A., you're not just hiring contractors—you're partnering with people who genuinely care about the quality of your project and your satisfaction with the final result.</p>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Work Together?</h2>
+            <p>Let's discuss how we can bring your construction vision to life</p>
+            <div>
+                <a href="../contact-us/index.html" class="btn btn-secondary">Get in Touch</a>
+                <a href="../our-projects/index.html" class="btn btn-secondary">View Our Work</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>H.M.A. Framing & Renovations Ltd.</h3>
+                <p>Building excellence since 2016</p>
+                <p>Professional framing and renovation services across Alberta</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p>📍 #20 64078 393 Ave E<br>Okotoks, AB T1S 0L1</p>
+                <p>📞 <a href="tel:+15877002687">(587) 700-2687</a></p>
+                <p>✉️ <a href="mailto:Harpreetgill8484@gmail.com">Harpreetgill8484@gmail.com</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Service Areas</h3>
+                <p>Calgary</p>
+                <p>Chestermere</p>
+                <p>Cochrane</p>
+                <p>Okotoks</p>
+                <p>& Surrounding Areas</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="../index.html">Home</a>
+                <a href="../our-projects/index.html">Our Projects</a>
+                <a href="index.html">About Us</a>
+                <a href="../contact-us/index.html">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 H.M.A. Framing & Renovations Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
