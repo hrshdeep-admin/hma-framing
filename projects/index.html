@@ -1,1 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Projects - H.M.A. Framing & Renovations Ltd.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d35400;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #2c3e50;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #d35400;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #d35400;
+        }
+
+        .nav-links a.active {
+            color: #d35400;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-top: 80px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 80px 2rem 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><path d="M0 0L50 50L0 100" stroke="rgba(255,255,255,0.03)" stroke-width="2" fill="none"/><path d="M50 0L100 50L50 100" stroke="rgba(255,255,255,0.03)" stroke-width="2" fill="none"/></svg>');
+            opacity: 0.3;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            padding: 80px 2rem;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-intro h2 {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .section-intro p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .project-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 280px;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.1);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(44, 62, 80, 0.9) 0%, rgba(44, 62, 80, 0) 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .overlay-content {
+            color: white;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .overlay-content {
+            transform: translateY(0);
+        }
+
+        .overlay-content span {
+            display: inline-block;
+            background: #d35400;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .project-info {
+            padding: 1.5rem 2rem 2rem;
+            position: relative;
+        }
+
+        .project-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2rem;
+            right: 2rem;
+            height: 3px;
+            background: linear-gradient(90deg, #d35400, #e67e22);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .project-info::before {
+            transform: scaleX(1);
+        }
+
+        .project-info h3 {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover .project-info h3 {
+            color: #d35400;
+        }
+
+        .project-info p {
+            color: #7f8c8d;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .project-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .project-location::before {
+            content: '📍';
+        }
+
+        /* Featured Project */
+        .featured-project {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .featured-project .project-image-container {
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .featured-project .project-info {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+
+        .featured-project .project-info::before {
+            display: none;
+        }
+
+        .featured-badge {
+            display: inline-block;
+            background: #d35400;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            width: fit-content;
+        }
+
+        .featured-project .project-info h3 {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .featured-project .project-info p {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .featured-project .project-location {
+            color: rgba(255,255,255,0.7);
+            margin-top: 1.5rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 2rem;
+            background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            margin: 0 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #d35400;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #d35400;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: #d35400;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            color: #d35400;
+        }
+
+        .lightbox-caption {
+            text-align: center;
+            color: white;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                transition: left 0.3s ease;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-project {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-project .project-image-container {
+                min-height: 250px;
+            }
+
+            .featured-project .project-info {
+                padding: 2rem;
+            }
+
+            .featured-project .project-info h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">H.M.A. <span>Framing & Renovations</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../projects/index.html" class="active">Our Projects</a></li>
+                <li><a href="../about/index.html">About</a></li>
+                <li><a href="../contact/index.html">Contact Us</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Our Projects</h1>
+        <p>Showcasing our craftsmanship and dedication to excellence</p>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-section">
+        <div class="container">
+            <div class="section-intro">
+                <h2>Quality Work, Proven Results</h2>
+                <p>Browse through our portfolio of completed projects. Each one represents our commitment to superior craftsmanship and client satisfaction across Calgary and surrounding areas.</p>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Featured Project -->
+                <div class="project-card featured-project visible">
+                    <div class="project-image-container">
+                        <img src="../assets/photos/photo1.jpeg" alt="Featured Project" class="project-image" onclick="openLightbox(this)">
+                    </div>
+                    <div class="project-info">
+                        <span class="featured-badge">⭐ Featured Project</span>
+                        <h3>Modern Custom Home Framing</h3>
+                        <p>Complete structural framing for a stunning 3,500 sq ft custom residence. This project showcased our precision engineering with complex roof lines, open-concept living spaces, and high cathedral ceilings that required expert craftsmanship.</p>
+                        <div class="project-location">Calgary, AB</div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="../assets/photos/photo2.jpeg" alt="Basement Development" class="project-image" onclick="openLightbox(this)">
+                        <div class="project-overlay">
+                            <div class="overlay-content">
+                                <span>Basement Development</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Luxury Basement Suite</h3>
+                        <p>Full basement transformation featuring a home theater, wet bar, and guest bedroom with ensuite bathroom.</p>
+                        <div class="project-location">Okotoks, AB</div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="../assets/photos/photo3.jpeg" alt="Commercial Framing" class="project-image" onclick="openLightbox(this)">
+                        <div class="project-overlay">
+                            <div class="overlay-content">
+                                <span>Commercial Framing</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Commercial Office Build</h3>
+                        <p>Steel and wood hybrid framing for a modern 12,000 sq ft office complex with open floor plan design.</p>
+                        <div class="project-location">Chestermere, AB</div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="../assets/photos/photo4.jpeg" alt="Home Renovation" class="project-image" onclick="openLightbox(this)">
+                        <div class="project-overlay">
+                            <div class="overlay-content">
+                                <span>Complete Renovation</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Heritage Home Restoration</h3>
+                        <p>Careful restoration and modernization of a 1940s character home while preserving its original charm.</p>
+                        <div class="project-location">Cochrane, AB</div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="../assets/photos/photo5.jpeg" alt="Deck Construction" class="project-image" onclick="openLightbox(this)">
+                        <div class="project-overlay">
+                            <div class="overlay-content">
+                                <span>Outdoor Structures</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Multi-Level Cedar Deck</h3>
+                        <p>Custom-designed two-tier deck with integrated pergola, built-in seating, and outdoor kitchen area.</p>
+                        <div class="project-location">Calgary, AB</div>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="../assets/photos/photo6.jpeg" alt="Structural Modification" class="project-image" onclick="openLightbox(this)">
+                        <div class="project-overlay">
+                            <div class="overlay-content">
+                                <span>Structural Work</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Load-Bearing Wall Removal</h3>
+                        <p>Complex structural modification creating an expansive open-concept kitchen and living space with engineered beam installation.</p>
+                        <div class="project-location">Airdrie, AB</div>
+                    </div>
+                </div>
+
+                <!-- Project 7 -->
+                <div class="project-card">
+                    <div class="project-image-container">
+                        <img src="../assets/photos/photo7.jpeg" alt="New Construction" class="project-image" onclick="openLightbox(this)">
+                        <div class="project-overlay">
+                            <div class="overlay-content">
+                                <span>New Construction</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Contemporary Infill Home</h3>
+                        <p>Complete framing for a sleek three-story infill home featuring rooftop patio and attached garage.</p>
+                        <div class="project-location">Calgary, AB</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Start Your Project?</h2>
+            <p>Let's discuss how we can bring your construction vision to life</p>
+            <div>
+                <a href="../contact/index.html" class="btn btn-secondary">Get a Free Quote</a>
+                <a href="tel:+15877002687" class="btn btn-secondary">Call (587) 700-2687</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>H.M.A. Framing & Renovations Ltd.</h3>
+                <p>Building excellence since 2018</p>
+                <p>Professional framing and renovation services across Alberta</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p>📍 #20 64078 393 Ave E<br>Okotoks, AB T1S 0L1</p>
+                <p>📞 <a href="tel:+15877002687">(587) 700-2687</a></p>
+                <p>✉️ <a href="mailto:Harpreetgill8484@gmail.com">Harpreetgill8484@gmail.com</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Service Areas</h3>
+                <p>Calgary</p>
+                <p>Chestermere</p>
+                <p>Cochrane</p>
+                <p>Okotoks</p>
+                <p>& Surrounding Areas</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="../index.html">Home</a>
+                <a href="../projects/index.html">Our Projects</a>
+                <a href="../about/index.html">About Us</a>
+                <a href="../contact/index.html">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 H.M.A. Framing & Renovations Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+            <img src="" alt="Project Image" id="lightbox-img">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll Animation for Project Cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.project-card:not(.featured-project)').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Lightbox Functions
+        function openLightbox(img) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            
+            lightboxImg.src = img.src;
+            lightboxCaption.textContent = img.alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox on background click
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Close lightbox on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
